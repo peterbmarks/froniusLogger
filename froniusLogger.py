@@ -10,7 +10,8 @@ import time
 
 # Set this to the IP address of your inverter
 host = "192.168.0.112"
-sample_seconds = 60  # how many seconds between samples, set to zero to run once and exit
+# number of seconds between samples, set to zero to run once and exit
+sample_seconds = 60 * 5
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
             # print(line)
             write_to_logfile(line)
         except requests.exceptions.ConnectTimeout:
-            print("Connect timeout")
+            print("Connect timeout at %s" % time.strftime("%H:%M:%S"))
         if sample_seconds > 0:
             time.sleep(sample_seconds)
         else:

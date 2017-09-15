@@ -19,17 +19,25 @@ INFILENAME = today + '.csv'
 
 def main():
     datareader = csv.reader(open(INFILENAME,'r'), delimiter='\t')
-    points = []
+    y = []
+    x = []
+    xlabels = []
+    counter = 0
     for row in datareader:
         if len(row) > 1:
+            timeval = row[0]
+            print("timeval = %s" % timeval)
+            xlabels.append(timeval)
+            x.append(counter)
+            counter += 1
             watts = float(row[1])
-            points.append(watts)
+            y.append(watts)
 
-
-    plt.plot(points)
+    plt.plot(y)
+    plt.xticks(x, xlabels, rotation=30)
     plt.ylabel('Watt')
     plt.show()
-    plt.savefig('wattgraph')
+    plt.savefig('%s_graph' % today)
 
 
 if __name__ == "__main__":

@@ -10,18 +10,20 @@ import time
 
 # Set this to the IP address of your inverter
 host = "192.168.0.112"
-sample_seconds = 60  # how many seconds between samples
-
+sample_seconds = 60  # how many seconds between samples, set to zero to run once and exit
 
 def main():
     print("started")
     while True:
         watts = watts_generated()
-        now = datetime.datetime.now()
+        now = time.strftime("%H:%M:%S")
         line = "%s\t%s\n" % (now, watts)
-        #print(line)
+        # print(line)
         write_to_logfile(line)
-        time.sleep(sample_seconds)
+        if sample_seconds > 0:
+            time.sleep(sample_seconds)
+        else:
+            return
 
 
 def write_to_logfile(line):

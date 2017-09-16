@@ -4,23 +4,27 @@ Requires matplotlib
 
 On Fedora Linux: sudo dnf install python3-matplotlib
 
+Usage: python3 graph.py [csv file name]
+If you don't give the file name it will use today's
+
 """
 
+import csv
+import time
+import datetime
+import sys
+import os
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import csv
-import time
-import datetime
-
-today = time.strftime("%Y_%m_%d")
-
-INFILENAME = today + '.csv'
-
 
 def main():
-    data_reader = csv.reader(open(INFILENAME,'r'), delimiter='\t')
+    date_base = time.strftime("%Y_%m_%d")
+    if len(sys.argv) > 1:
+        date_base = os.path.splitext(sys.argv[1])[0]
+    in_file_name = date_base + ".csv"
+    data_reader = csv.reader(open(in_file_name,'r'), delimiter='\t')
     y = []
     x = []
     for row in data_reader:
@@ -28,7 +32,6 @@ def main():
             timeval = row[0]
 
             dt = datetime.datetime.strptime(timeval, "%H:%M:%S")
-            print("timeval = %s -> %s" % (timeval, dt))
             x.append(mdates.date2num(dt))
             watts = float(row[1])
             y.append(watts)
@@ -41,7 +44,8 @@ def main():
     plt.ylabel("Watts")
     plt.xlabel("Time")
     plt.show()
-    plt.savefig('%s_graph' % today)
+    print("writing: %s" % date_base)
+    plt.savefig('%s_graph' % date_base)
 
 
 if __name__ == "__main__":

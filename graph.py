@@ -19,6 +19,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+
 def main():
     date_base = time.strftime("%Y_%m_%d")
     if len(sys.argv) > 1:
@@ -27,6 +28,7 @@ def main():
     data_reader = csv.reader(open(in_file_name,'r'), delimiter='\t')
     y = []
     x = []
+    max_watts = 0.0
     for row in data_reader:
         if len(row) > 1:
             timeval = row[0]
@@ -35,6 +37,8 @@ def main():
             x.append(mdates.date2num(dt))
             watts = float(row[1])
             y.append(watts)
+            if watts > max_watts:
+                max_watts = watts
 
     fig, ax = plt.subplots()
     ax.plot(x,y)
@@ -43,6 +47,10 @@ def main():
     ax.xaxis.set_major_formatter(my_fmt)
     plt.ylabel("Watts")
     plt.xlabel("Time")
+
+    text_x = datetime.datetime.strptime("06:00", "%H:%M")
+    text_y = max_watts
+    plt.text(text_x, text_y, "Max: %dW" % max_watts)
     plt.show()
     print("writing: %s" % date_base)
     plt.savefig('%s_graph' % date_base)

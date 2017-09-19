@@ -45,6 +45,9 @@ def main():
     ax.xaxis_date()
     my_fmt = mdates.DateFormatter('%H:%M')
     ax.xaxis.set_major_formatter(my_fmt)
+
+    title_date = time.strftime("%d-%b-%Y")
+    plt.title("Solar generation on %s" % title_date)
     plt.ylabel("Watts")
     plt.xlabel("Time")
 

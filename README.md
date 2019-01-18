@@ -8,3 +8,5 @@ The Fronius inverters have a convenient JSON producing web services API.
 * requests module.
 * matplotlib
 
+## More
+
